@@ -21,10 +21,7 @@ CREATE TABLE wallets (
 CREATE TABLE transactions (
   id                 BIGINT AUTO_INCREMENT PRIMARY KEY,
   phone_number       VARCHAR(15) NOT NULL,
-  network            VARCHAR(20) NOT NULL,
   service_id         VARCHAR(30) NOT NULL,
-  billers_code       VARCHAR(30) NOT NULL,
-  variation_code     VARCHAR(25) NOT NULL,
   amount_naira       DECIMAL(10, 2) NOT NULL,
   amount_crypto      DECIMAL(20, 8) NOT NULL,
   crypto_currency    VARCHAR(25) NOT NULL,

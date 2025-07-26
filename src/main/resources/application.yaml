@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: store
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/arypto_api?createDatabaseIfNotExist=true
+    username: root
+    password: admin
+  jpa:
+    show-sql: true
+
+quidax:
+  secretKey: ${QUIDAX_SECRET_KEY}
+  baseUrl: https://app.quidax.io/api/v1
+
+vtpass:
+  secretKey: ${VTPASS_SECRET_KEY}
+  publicKey: ${VTPASS_PUBLIC_KEY}
+  staticKey: ${VTPASS_STATIC_API_KEY}
+  baseUrl: https://sandbox.vtpass.com/api #https://vtpass.com/api

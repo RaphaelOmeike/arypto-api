@@ -19,17 +19,8 @@ public class Transaction {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "network")
-    private String network;
-
     @Column(name = "service_id")
     private String serviceId;
-
-    @Column(name = "billers_code")
-    private String billersCode;
-
-    @Column(name = "variation_code")
-    private String variationCode;
 
     @Column(name = "amount_naira")
     private BigDecimal amountNaira;
