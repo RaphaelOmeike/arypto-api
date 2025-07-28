@@ -1,12 +1,14 @@
 package com.codewithmosh.arypto.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -35,6 +37,10 @@ public class Transaction {
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 
+    @Column(name = "transaction_type")
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
+
     @Column(name = "transaction_status")
     @Enumerated(EnumType.STRING)
     private TransactionStatus transactionStatus;
@@ -60,6 +66,5 @@ public class Transaction {
 
     @Column(name = "is_terminated")
     private Boolean isTerminated;
-
 
 }

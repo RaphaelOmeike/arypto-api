@@ -1,12 +1,14 @@
 package com.codewithmosh.arypto.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,10 +30,14 @@ public class Wallet {
     @Column(name = "is_active")
     private boolean isActive;
 
+    @Column(name = "balance")
+    private BigDecimal balance;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "wallet")
+    @Builder.Default
     private Set<Transaction> transactions = new LinkedHashSet<>();
 }
