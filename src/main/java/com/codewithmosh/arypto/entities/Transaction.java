@@ -61,10 +61,11 @@ public class Transaction {
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "expires_at", updatable = false)
-    private LocalDateTime expiresAt;
-
-    @Column(name = "is_terminated")
-    private Boolean isTerminated;
+//
+//    @Column(name = "expires_at", updatable = false)
+//    private LocalDateTime expiresAt;
+//
+//    @Column(name = "is_terminated")
+//    private Boolean isTerminated;
 
 }

@@ -27,8 +27,8 @@ public class Wallet {
     @Column(name = "network")
     private String network;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+//    @Column(name = "is_active")
+//    private boolean isActive;
 
     @Column(name = "balance")
     private BigDecimal balance;

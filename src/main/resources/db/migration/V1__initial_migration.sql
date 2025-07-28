@@ -12,7 +12,6 @@ CREATE TABLE wallets (
  deposit_address VARCHAR(50) NOT NULL,
  crypto_currency VARCHAR(25) NOT NULL,
  network         VARCHAR(20) NOT NULL,
- is_active       BOOLEAN DEFAULT TRUE,
  user_id         VARCHAR(36) NOT NULL,
  balance         DECIMAL(10, 2) NOT NULL,
  CONSTRAINT wallets_users_id_fk
@@ -34,8 +33,6 @@ CREATE TABLE transactions (
   transaction_hash   VARCHAR(100) NULL,
   transaction_id     VARCHAR(50) NULL,
   created_at         DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-  expires_at         DATETIME NOT NULL,
-  is_terminated      BOOLEAN DEFAULT FALSE,
   CONSTRAINT transactions_wallets_id_fk
       FOREIGN KEY (wallet_id) REFERENCES wallets(id)
 );

@@ -1,7 +1,11 @@
 package com.codewithmosh.arypto.services;
 
 import com.codewithmosh.arypto.dtos.*;
+import com.codewithmosh.arypto.entities.Transaction;
+import com.codewithmosh.arypto.entities.TransactionType;
 import com.codewithmosh.arypto.entities.Wallet;
+import com.codewithmosh.arypto.exceptions.WalletNotFoundException;
+import com.codewithmosh.arypto.repositories.TransactionRepository;
 import com.codewithmosh.arypto.repositories.UserRepository;
 import com.codewithmosh.arypto.repositories.WalletRepository;
 import com.google.gson.Gson;
@@ -16,22 +20,23 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
 
 @Service
 public class QuidaxPaymentGateway implements CryptoPaymentGateway {
 
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
+    private final TransactionRepository transactionRepository;
     @Value("${quidax.baseUrl}")
     private String baseUrl;
 
     @Value("${quidax.secretKey}")
     private String apiKey;
 
-    public QuidaxPaymentGateway(UserRepository userRepository, WalletRepository walletRepository) {
+    public QuidaxPaymentGateway(UserRepository userRepository, WalletRepository walletRepository, TransactionRepository transactionRepository) {
         this.userRepository = userRepository;
         this.walletRepository = walletRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -151,9 +156,30 @@ public class QuidaxPaymentGateway implements CryptoPaymentGateway {
                     JsonObject wallet = data.getAsJsonObject("wallet");
                     depositAddress = wallet.has("deposit_address") ? wallet.get("deposit_address").getAsString() : null;
                     walletId = wallet.has("id") ? wallet.get("id").getAsString() : null;
+
+                    if (walletId == null) {
+                        System.out.println("Error: wallet id is null");
+                        return;
+                    }
+                    var existingWallet = walletRepository.findById(walletId)
+                            .orElseThrow(WalletNotFoundException::new);
+                    var transaction = Transaction.builder()
+                            .transactionHash(txid)
+                            .transactionType(TransactionType.CREDIT)
+                            .amountCrypto(amount)
+                            .cryptoCurrency(currency)
+                            .wallet(existingWallet).build();
+
+                    var initialBalance = existingWallet.getBalance();
+
+                    existingWallet.setBalance(initialBalance.add(amount));
+
+                    transactionRepository.save(transaction);
                 }
 //                continue from here
                 // create a transaction of type deposit
+
+
 //                var transaction = T
 //                the wallet balance shouldbe maintained locally and not imitated
 //                incrememnt wallet balance

@@ -152,6 +152,10 @@ public class VTpassServiceGateway implements UtilityServiceGateway {
 
             // TODO: Use requestId to locate your local DB record and update its status
 
+//            var transaction = Transaction.builder()
+//                    .transactionType(TransactionType.DEBIT)
+//                    .amountNaira(amount)
+//                    .
             var existingTransaction = transactionRepository.findByRequestId(requestId).orElse(null);
 
             if (existingTransaction == null) {
@@ -159,14 +163,15 @@ public class VTpassServiceGateway implements UtilityServiceGateway {
             }
 
             if (status != null && status.toLowerCase().contains("delivered")) {
-                existingTransaction.setDeliveryStatus(DeliveryStatus.FAILED);
+                existingTransaction.setDeliveryStatus(DeliveryStatus.DELIVERED);
                 System.out.println("❌ Transaction not delivered, ignoring webhook.");
             }
             else {
-                existingTransaction.setDeliveryStatus(DeliveryStatus.DELIVERED);
+                existingTransaction.setDeliveryStatus(DeliveryStatus.FAILED);
             }
-            existingTransaction.getWallet().setActive(false);
-            existingTransaction.setIsTerminated(true);
+//            var initialBalance = existingTransaction.getWallet().getBalance();
+//            existingTransaction.getWallet().setBalance(initialBalance
+//                    .min(BigDecimal.valueOf(amount != null ? amount : 0)));
 
             transactionRepository.save(existingTransaction); //touch grass
         } catch (Exception ex) {
