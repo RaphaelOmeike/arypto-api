@@ -13,7 +13,7 @@ public class AirtimePurchaseRequest {
     private String requestId;
 
     @SerializedName("serviceID")
-    private String serviceID; // "airtel-data"
+    private String serviceId; // "airtel-data"
 
     @SerializedName("amount")
     private BigDecimal amount;
