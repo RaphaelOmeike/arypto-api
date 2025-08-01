@@ -23,4 +23,5 @@ public class WalletService {
         }
         return walletMapper.toDto(wallet);
     }
+
 }

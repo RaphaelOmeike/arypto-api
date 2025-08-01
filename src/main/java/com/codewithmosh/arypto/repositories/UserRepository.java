@@ -9,12 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, String> {
-    @EntityGraph(attributePaths = "")
+    @EntityGraph(attributePaths = "cryptoWallets.user")
     @Query("SELECT u FROM User u WHERE u.id = :userId")
-    Optional<User> getUserWithTransactions(String userId);
+    Optional<User> getUserWithWallets(String userId);
 
     boolean existsByEmail(String email);
 
     Optional<User> findByEmail(String email);
-
 }

@@ -33,7 +33,7 @@ public class Wallet {
     @Column(name = "balance")
     private BigDecimal balance;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)//maybe change this later
     @JoinColumn(name = "user_id")
     private User user;
 
