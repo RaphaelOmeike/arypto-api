@@ -20,7 +20,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class TransactionService {
-    private final CryptoPaymentGateway paymentGateway;
     private final UtilityServiceGateway serviceGateway;
 
     private final TransactionMapper transactionMapper;

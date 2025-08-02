@@ -14,11 +14,13 @@ public class RegisterUserRequest {
 
     @NotBlank(message = "Lastname is required")
     @Size(max = 255, message = "Lastname must be less than 255 characters")
-    private String name;
+    private String lastName;
+
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
     @Lowercase(message = "Email must be in lowercase")
     private String email;
+
     @NotBlank(message = "Password is required")
     @Size(min = 6, max = 25, message = "Password must be between 6 to 25 characters long.")
     private String password;

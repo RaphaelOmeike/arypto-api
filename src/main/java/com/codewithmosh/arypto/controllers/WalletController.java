@@ -35,4 +35,9 @@ public class WalletController {
         return ResponseEntity.ok(response);
     }
 
+//    @PostMapping("/deposit/{walletId}")
+//    public ResponseEntity<WalletDto> deposit(@PathVariable(name = "walletId") String walletId) {
+//        handled by the webhook already
+//    }
+
 }
