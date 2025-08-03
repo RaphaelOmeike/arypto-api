@@ -24,7 +24,7 @@ public class Jwt {
         return claims.getExpiration().before(new Date());
     }
     public String getUserId(String token) {
-        return Long.valueOf(claims.getSubject());
+        return String.valueOf(claims.getSubject());
     }
 
     public Role getRole(String token) {
