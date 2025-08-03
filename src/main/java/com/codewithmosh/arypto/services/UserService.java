@@ -28,27 +28,12 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class UserService implements UserDetailsService {
-
+public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final CryptoPaymentGateway paymentGateway;
-    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final JwtConfig jwtConfig;
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = userRepository.findByEmail(email).orElseThrow(
-                () -> new UsernameNotFoundException(email)
-        );
-        return new User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.emptyList()
-        );
-    }
 
 
     public UserDto fetchUserWithWallets(String userId) {
@@ -115,10 +100,11 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException(userId);
         }
-        if (!user.getPassword().equals(request.getOldPassword())) {
+        if (!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             throw new PasswordMismatchException("Passwords do not match");
         }
-        user.setPassword(request.getNewPassword());
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
         userRepository.save(user);
 
     }
@@ -146,38 +132,13 @@ public class UserService implements UserDetailsService {
         return new JwtResponse(accessToken.toString());
     }
 
-    public JwtResponse login(LoginRequest request, HttpServletResponse response) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var accessToken = jwtService.generateAccessToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        var cookie = new Cookie("refreshToken", refreshToken.toString());
-        cookie.setHttpOnly(true);
-        cookie.setPath("/auth/refresh");
-        cookie.setMaxAge(jwtConfig.getRefreshTokenExpiration());
-        cookie.setSecure(true);
-        response.addCookie(cookie);
-        return new JwtResponse(accessToken.toString());
-    }
+
 
     // ...existing code...
     public boolean validateToken(String authHeader) {
         var token = authHeader.replace("Bearer ", "");
         var jwt = jwtService.parseToken(token);
         return !jwt.isExpired(token);
-    }
-
-    public UserDto getCurrentUser(String userId) {
-        var user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            throw new UsernameNotFoundException(userId);
-        }
-        return userMapper.toDto(user);
     }
 
     public UserDto getMe() {

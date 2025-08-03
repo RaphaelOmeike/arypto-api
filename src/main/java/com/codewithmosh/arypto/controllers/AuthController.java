@@ -4,6 +4,7 @@ import com.codewithmosh.arypto.dtos.ErrorDto;
 import com.codewithmosh.arypto.dtos.JwtResponse;
 import com.codewithmosh.arypto.dtos.LoginRequest;
 import com.codewithmosh.arypto.dtos.UserDto;
+import com.codewithmosh.arypto.services.AuthService;
 import com.codewithmosh.arypto.services.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 @RestController
 public class AuthController {
     private final UserService userService;
+    private final AuthService authService;
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponse> refresh(
@@ -32,7 +34,7 @@ public class AuthController {
             @Valid @RequestBody LoginRequest request,
             HttpServletResponse response
     ) {
-        var result = userService.login(request, response);
+        var result = authService.login(request, response);
 
         return ResponseEntity.ok(result);
     }

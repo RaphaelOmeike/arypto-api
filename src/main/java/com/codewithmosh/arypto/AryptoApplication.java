@@ -8,6 +8,7 @@ public class AryptoApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AryptoApplication.class, args);
+        System.out.println("working now");
     }
 
 }
