@@ -16,6 +16,7 @@ spring:
 quidax:
   secretKey: ${QUIDAX_SECRET_KEY}
   baseUrl: https://app.quidax.io/api/v1
+  webhookSecret: ${QUIDAX_WEBHOOK_SECRET}
 
 vtpass:
   secretKey: ${VTPASS_SECRET_KEY}

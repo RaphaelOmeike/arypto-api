@@ -6,6 +6,8 @@ import com.codewithmosh.arypto.dtos.LoginRequest;
 import com.codewithmosh.arypto.dtos.UserDto;
 import com.codewithmosh.arypto.services.AuthService;
 import com.codewithmosh.arypto.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,6 +40,7 @@ public class AuthController {
 
         return ResponseEntity.ok(result);
     }
+
     @PostMapping("/validate")
     public boolean validate(@RequestHeader("Authorization") String authHeader) {
         return userService.validateToken(authHeader);

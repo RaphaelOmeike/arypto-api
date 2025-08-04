@@ -11,6 +11,7 @@ import com.codewithmosh.arypto.repositories.WalletRepository;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+@RequiredArgsConstructor
 @Service
 public class QuidaxPaymentGateway implements CryptoPaymentGateway {
-
     private final UserRepository userRepository;
     private final WalletRepository walletRepository;
     private final TransactionRepository transactionRepository;
@@ -32,12 +33,6 @@ public class QuidaxPaymentGateway implements CryptoPaymentGateway {
 
     @Value("${quidax.secretKey}")
     private String apiKey;
-
-    public QuidaxPaymentGateway(UserRepository userRepository, WalletRepository walletRepository, TransactionRepository transactionRepository) {
-        this.userRepository = userRepository;
-        this.walletRepository = walletRepository;
-        this.transactionRepository = transactionRepository;
-    }
 
     @Override
     public CreateSubaccountResponse createSubaccount(CreateSubaccountRequest request) {
