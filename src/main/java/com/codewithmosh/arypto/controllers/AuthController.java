@@ -41,10 +41,16 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(
+            security = @SecurityRequirement(name = "Bearer Authentication") // Only this method is protected
+    )
     @PostMapping("/validate")
     public boolean validate(@RequestHeader("Authorization") String authHeader) {
         return userService.validateToken(authHeader);
     }
+    @Operation(
+            security = @SecurityRequirement(name = "Bearer Authentication") // Only this method is protected
+    )
     @GetMapping("/me")
     public ResponseEntity<UserDto> me() {
         return ResponseEntity.ok(userService.getMe());

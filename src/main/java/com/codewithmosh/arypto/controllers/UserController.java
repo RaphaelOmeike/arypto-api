@@ -4,6 +4,8 @@ import com.codewithmosh.arypto.dtos.*;
 import com.codewithmosh.arypto.exceptions.EmailAlreadyExistsException;
 import com.codewithmosh.arypto.exceptions.PasswordMismatchException;
 import com.codewithmosh.arypto.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,9 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(
+            security = @SecurityRequirement(name = "Bearer Authentication") // Only this method is protected
+    )
     @GetMapping
     public Iterable<UserDto> getAllUsers(
             @RequestHeader(required = false, name = "x-auth-token") String authToken,

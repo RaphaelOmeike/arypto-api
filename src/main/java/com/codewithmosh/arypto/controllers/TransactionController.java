@@ -7,6 +7,8 @@ import com.codewithmosh.arypto.exceptions.InsufficientBalanceException;
 import com.codewithmosh.arypto.exceptions.WalletNotFoundException;
 import com.codewithmosh.arypto.services.TransactionService;
 import com.codewithmosh.arypto.services.UtilityServiceGateway;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,10 @@ import java.util.Map;
 public class TransactionController {
     private final TransactionService transactionService;
     private final UtilityServiceGateway serviceGateway;
+
+    @Operation(
+            security = @SecurityRequirement(name = "Bearer Authentication") // Only this method is protected
+    )
     @PostMapping("/purchase/airtime")
     ResponseEntity<AirtimePurchaseResponse> purchaseAirtime(@RequestBody BuyAirtimeRequest request) {
         var response = transactionService.purchaseAirtime(request);
@@ -28,7 +34,9 @@ public class TransactionController {
         return ResponseEntity.ok(response);
     }
 
-
+    @Operation(
+            security = @SecurityRequirement(name = "Bearer Authentication") // Only this method is protected
+    )
     @PostMapping("/verify/{request_id}")
     public ResponseEntity<?> verifyPurchase(
             @PathVariable("request_id") String requestId

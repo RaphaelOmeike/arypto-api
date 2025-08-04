@@ -2,15 +2,18 @@ package com.codewithmosh.arypto.controllers;
 
 import com.codewithmosh.arypto.dtos.FetchWalletResponse;
 import com.codewithmosh.arypto.dtos.WalletDto;
+import com.codewithmosh.arypto.exceptions.WalletNotFoundException;
 import com.codewithmosh.arypto.services.CryptoPaymentGateway;
 import com.codewithmosh.arypto.services.WalletService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
+@SecurityRequirement(name = "Bearer Authentication") // Only this method is protected
 @RestController
 @RequestMapping("/wallets")
 @AllArgsConstructor
@@ -39,5 +42,12 @@ public class WalletController {
 //    public ResponseEntity<WalletDto> deposit(@PathVariable(name = "walletId") String walletId) {
 //        handled by the webhook already
 //    }
+
+    @ExceptionHandler(WalletNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleWalletNotFound() {
+        return ResponseEntity.status((HttpStatus.NOT_FOUND)).body(
+                Map.of("error", "Wallet not found.")
+        );
+    }
 
 }
